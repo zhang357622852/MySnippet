@@ -13,7 +13,17 @@
       <Shortcut>MyFunc</Shortcut>
     </Header>
     <Snippet>
-      <Code Language="csharp" Delimiter="$"><![CDATA[private void Init()
+      <Code Language="csharp" Delimiter="$"><![CDATA[private const string PREFAB_PATH = "GUI/Task/DailyTaskPanel";
+[Header("---------Controller Content----------")]
+
+public static DailyTaskController Create()
+{
+    DailyTaskCtrl ctrl = UIComponent.Create<DailyTaskCtrl>(PREFAB_PATH);
+
+    return ctrl;
+}
+
+private void Init()
 {
     InitFixed();
     BindEvent();
@@ -26,6 +36,7 @@ private void InitFixed()
 
 private void BindEvent()
 {
+    UIEventListener.Get(gameObject).onClick = OnClick;
 }
 
 private void UnBindEvent()
@@ -48,6 +59,10 @@ private void OnClick(GameObject go)
 }
 #endregion
 
+public void Close()
+{
+    End();
+}
 ]]></Code>
     </Snippet>
   </CodeSnippet>
