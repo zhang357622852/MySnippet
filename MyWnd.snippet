@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>MyWnd</Title>
+      <Author>
+      </Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>MyWnd</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[#region 成员变量
+#endregion 
+
+private void Start ()
+{
+    // 初始化文本
+    InitText();
+
+    // 注册事件
+    RegisterEvent();
+
+    // 绘制窗口
+    Redraw();
+}
+
+private void OnDestroy()
+{
+    WindowMgr.RemoveOpenWnd(gameObject, WindowOpenGroup.SINGLE_OPEN_WND);
+
+    // 解注册事件
+    EventMgr.UnregisterEvent("ChatWnd");
+
+    MsgMgr.RemoveDoneHook("MSG_CHAT_MESSAGE", "ChatWnd");
+
+    // 移除字段关注
+    if (ME.user == null)
+        return;
+
+    ME.user.dbase.RemoveTriggerField("GangDetailsWnd");
+}
+
+/// <summary>
+/// 初始化本地化文本
+/// </summary>
+private void InitText()
+{
+    mGangLeaderTips.text = LocalizationMgr.Get("GangWnd_6");
+}
+
+/// <summary>
+/// 注册事件
+/// </summary>
+private void RegisterEvent()
+{
+    // 注册按钮点击事件
+    UIEventListener.Get(mCloseBtn).onClick = OnClickCloseBtn;
+
+    //自定义消息监听
+    EventMgr.RegisterEvent("ChatWnd", EventMgrEventType.EVENT_CHAT_ITEM_CLICK, OnClickEvent);
+    
+    //服务端回调监听
+    MsgMgr.RegisterDoneHook("MSG_CHAT_MESSAGE", "ChatWnd", OnChatMsg);
+
+    if (ME.user == null)
+        return;
+
+    // 角色属性变更监听
+    ME.user.dbase.RegisterTriggerField("GangDetailsWnd", new string[]{"user_requests"}, new CallBack(OnUserRequestChange));
+}
+
+/// <summary>
+/// 绘制窗口
+/// </summary>
+private void Redraw()
+{
+}
+
+private void OnClickEvent(int eventId, MixedValue para)
+{
+}
+
+/// <summary>
+/// 玩家请求数据变化
+/// </summary>
+private void OnUserRequestChange(object para, params object[] param)
+{
+}
+
+void OnChatMsg(string cmd, LPCValue para)
+{
+}
+
+/// <summary>
+/// 关闭按钮点击回调
+/// </summary>
+private void OnClickCloseBtn(GameObject go)
+{
+    // 关闭当前窗口
+    WindowMgr.DestroyWindow(gameObject.name);
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

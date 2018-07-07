@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>MyGetItem</Title>
+      <Author>
+      </Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>MyGetItem</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[private int taskIndex = 0;
+private Transform GetItem()
+{
+    Transform tran = mContentGrid.transform.Find(taskIndex.ToString());
+    if (tran == null)
+    {
+        GameObject go = NGUITools.AddChild(mContentGrid.gameObject, mTaskItemPrefab);
+        tran = go.transform;
+        tran.name = taskIndex.ToString();
+        mTaskItemPrefab.SetActive(false);
+    }
+    taskIndex++;
+    tran.gameObject.SetActive(true);
+
+    return tran;
+}
+
+private void RecycleItems()
+{
+    taskIndex = 0;
+    for (int i = 0; i < mContentGrid.transform.childCount; i++)
+    {
+        Transform tran = mContentGrid.transform.GetChild(i);
+        tran.gameObject.SetActive(false);
+    }
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
