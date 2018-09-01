@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>MyPage</Title>
+      <Author>
+      </Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>MyPage</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp" Delimiter="$"><![CDATA[// 所有选项按钮
+public GameObject[] mButtons;
+
+private FindType mCurFindType = FindType.None;
+private enum FindType
+{
+    None = 0,
+    NameFind,
+    IDFind,
+}
+
+/// <summary>
+/// 设置按钮文本的位置
+/// </summary>
+private void SetButtonTextPos(GameObject go)
+{
+    if (go == null)
+        return;
+
+    for (int i = 0; i < mButtons.Length; i++)
+    {
+        GameObject button = mButtons[i];
+
+        if (button == null)
+            continue;
+
+        Transform labelTrans = button.transform.Find("Label");
+
+        if (labelTrans == null)
+            continue;
+
+        BoxCollider bc = button.GetComponent<BoxCollider>();
+
+        if (bc == null)
+            continue;
+
+        if (go.Equals(button))
+        {
+            bc.enabled = false;
+            labelTrans.localPosition = new Vector3(labelTrans.transform.localPosition.x, 11,labelTrans.transform.localPosition.z);
+        }
+        else
+        {
+            bc.enabled = true;
+            labelTrans.localPosition = new Vector3(labelTrans.transform.localPosition.x, 7, labelTrans.transform.localPosition.z);
+        }
+    }
+}
+
+/// <summary>
+/// 通过ID查找
+/// </summary>
+/// <param name="go"></param>
+private void OnClickIDFindBtn(GameObject go)
+{
+    mCurFindType = FindType.IDFind;
+    SetButtonTextPos(go);
+    mInput.value = string.Empty;
+    mInput.defaultText = LocalizationMgr.Get("FindFriendWnd_10");
+}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
